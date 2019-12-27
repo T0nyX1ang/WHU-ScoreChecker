@@ -1,0 +1,9 @@
+plugins:
+  radon:
+    enabled: true
+    config:
+      python_version: 3
+  bandit:
+    enabled: true
+    config:
+      python_version: 3
