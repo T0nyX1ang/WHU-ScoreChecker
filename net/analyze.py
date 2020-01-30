@@ -37,6 +37,20 @@ def get_csrf_token(content):
 		print('Failed to extract CSRF token.')
 		return None
 
+def get_academy(content):
+	# get academy name
+	if content is None:
+		return None
+	print('Extracting academy ...')
+	try:
+		b = bs4.BeautifulSoup(content, features='lxml')
+		academy = find(id='acade').get_text()
+		print('academy is set to:', academy)
+		return academy
+	except Exception as e:
+		print('Failed to extract academy.')
+		return None
+
 def get_score_table(content):
 	# get score table
 	if content is None:
