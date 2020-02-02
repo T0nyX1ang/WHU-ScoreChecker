@@ -1,16 +1,13 @@
 import os, numpy
 from image import process, partition
-from model import loader
 
 # predict the captcha
 
-def predict(bytes_im, filename='captcha_model.hdf5'):
+def predict(bytes_im, model):
 	captcha = ''
 	INV_TRANSFORM_STR = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 	if bytes_im is None:
 		print('Please check your network.')
-	else:
-		model = loader.load(filename)
 
 	if model is not None:
 		array_im = numpy.asarray(bytearray(bytes_im), dtype='uint8')
