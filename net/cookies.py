@@ -4,6 +4,7 @@ class Cookies(object):
 	# Basic cookies part.
 	def __init__(self):
 		self.__cookies = requests.cookies.RequestsCookieJar()
+		self.__cookies['userLanguage'] = 'zh-CN'
 		
 	def update(self, new_cookies):
 		# update the cookie jar with the response data
