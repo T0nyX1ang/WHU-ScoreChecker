@@ -4,7 +4,7 @@ import lxml
 # Analyze the page to extract important infomation
 
 def get_captcha_id(content):
-	# get captcha ID (1, 2, 3, 4)
+	# get captcha ID 
 	if content is None:
 		return None
 	print('Extracting captcha ID ...')
@@ -20,6 +20,21 @@ def get_captcha_id(content):
 		captcha_id = result[0][0]['src']
 		print('Captcha ID is set to:', captcha_id)
 	return captcha_id
+
+def get_login_id(content):
+	# get login id
+	if content is None:
+		return None
+	try:
+		print('Extracting login ID ...')
+		b = bs4.BeautifulSoup(content, features='lxml')
+		login_box = b.find(id='loginBox')
+		login_id = login_box.form['action']
+		print('Login ID is set to:', login_id)
+		return login_id
+	except Exception as e:
+		print('Failed to extract login ID.')
+		return None
 
 def get_csrf_token(content):
 	# get CSRF token
@@ -44,7 +59,7 @@ def get_academy(content):
 	print('Extracting academy ...')
 	try:
 		b = bs4.BeautifulSoup(content, features='lxml')
-		academy = find(id='acade').get_text()
+		academy = b.find(id='acade').get_text()
 		print('academy is set to:', academy)
 		return academy
 	except Exception as e:
@@ -69,7 +84,7 @@ def get_score_table(content):
 			if (rec == 12):
 				score_table.append(single)
 				single, rec = [], 0
-		score_table.sort(key=lambda stat:(stat[4], stat[5]))
+		score_table.sort(key=lambda stat:(stat[5], stat[6]))
 		print('Score table has been fetched successfully ...')
 		return score_table
 	except Exception as e:
