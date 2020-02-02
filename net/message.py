@@ -15,7 +15,7 @@ class Message(object):
 			self.__headers.update('Origin')	# Remove Origin header when GET
 			response = requests.get(url=url, timeout=timeout, headers=self.__headers.current(), cookies=self.__cookies.current())
 			self.__cookies.update(response.cookies) # Update cookies
-			self.__headers.update('Referer', response.url) # Update referrer
+			# self.__headers.update('Referer', response.url) # Update referrer
 			content = response.content
 			print('HTTP GET response is received successfully ...')
 			return content
@@ -31,7 +31,7 @@ class Message(object):
 			self.__headers.update('Origin', self.__headers.current()['Host']) # Add Origin header when POST
 			response = requests.post(url=url, data=data, timeout=timeout, headers=self.__headers.current(), cookies=self.__cookies.current())
 			self.__cookies.update(response.cookies) # update cookies
-			self.__headers.update('Referer', response.url) # Update referrer
+			# self.__headers.update('Referer', response.url) # Update referrer
 			content = response.content
 			print('HTTP POST response is received successfully ...')
 			return content
