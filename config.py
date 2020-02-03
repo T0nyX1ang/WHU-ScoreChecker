@@ -85,7 +85,7 @@ class ConfigApp(object):
 
 		if status:
 			print('Status checkes have been passed ...')
-			self.__main_window.quit()
+			self.__main_window.destroy()
 		else:
 			print('Some checkes have been failed ...')
 			tkinter.messagebox.showerror("Proceed", fail_hint)
