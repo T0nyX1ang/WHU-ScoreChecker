@@ -4,6 +4,7 @@ from course import score
 
 class ResultApp(object):
 	def __init__(self, score_table):
+		# This app should be utilized to show score results
 		self._main_window = tkinter.Tk()
 		self._main_window.title("Query Results")
 		self._main_window.geometry("800x600+400+200")
