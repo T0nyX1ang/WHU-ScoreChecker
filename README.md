@@ -4,6 +4,10 @@ A simple score checker for WHU.
 
 ## Important notice
 
+__Latest notice: We're going to finish this new app.__
+
+__More freedom will be given to the end users.__
+
 __As the system changes, we refreshed the repository.__
 
 The new version will be 1.0.0, which will be very different from former versions.
