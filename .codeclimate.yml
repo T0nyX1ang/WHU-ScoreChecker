@@ -1,9 +1,15 @@
 plugins:
+  duplication: 
+    enabled: true
+    config:
+      languages:
+        python:
+          python_version: 3
+          mass_threshold: 40
   radon:
     enabled: true
     config:
       python_version: 3
-      mass_threshold: 40
   bandit:
     enabled: true
     config:
