@@ -15,7 +15,9 @@ def type_check(val, _type):
 	return True if type(val) in _type else False
 
 def range_check(val, lb, ub):
-	return True if type_check(val, [float, int, str]) and lb <= val <= ub else False
+	return True if type_check(val, [float, int, str]) and \
+				   type(val) == type(lb) and type(val) == type(ub) and \
+				   lb <= val <= ub else False
 
 def validate_single_key_value(key, value):
 	# single key value checks.
