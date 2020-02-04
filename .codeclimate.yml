@@ -3,6 +3,7 @@ plugins:
     enabled: true
     config:
       python_version: 3
+      mass_threshold: 40
   bandit:
     enabled: true
     config:
