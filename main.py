@@ -2,8 +2,9 @@ import os
 import json
 import time
 import hashlib
-from model import loader
 from config import ConfigApp
+from course import extract
+from model import loader
 from net import message, analyze
 from predict import predict
 from result import ResultApp
@@ -28,8 +29,8 @@ class ScoreCheckerApp(object):
 
 		while self._retries > 0:
 			print('Logging in, remaining retries:', self._retries)
-			academy, score_table = self.login(ID, password, captcha_model)
-			if academy and score_table:
+			score_table = self.login(ID, password, captcha_model)
+			if score_table:
 				print('Logging in successfully ...')
 				break
 			self._retries -= 1
@@ -38,7 +39,7 @@ class ScoreCheckerApp(object):
 			return
 
 		print('Querying ...')
-		self.__query(academy, score_table, query_model)
+		self.query(score_table, query_model)
 		print('Querying successfully, see you next time.')
 		
 	def login(self, ID, password, captcha_model):
@@ -59,21 +60,21 @@ class ScoreCheckerApp(object):
 				'xdvfb': captcha,
 			}
 			login_content = self.__message_handler.post(url=login_url, data=login_data)
-			academy = analyze.get_academy(login_content)
 			csrf_token = analyze.get_csrf_token(login_content)
 			score_table_url = self.__url + '/servlet/Svlt_QueryStuScore?csrftoken=' + csrf_token + '&year=0&term=&learnType=&scoreFlag=0&t=' + \
 				str(time.ctime()).replace('  ', ' ') + ' GMT 0800 (中国标准时间)'
 			score_table_content = self.__message_handler.get(url=score_table_url)
 			score_table = analyze.get_score_table(score_table_content)
-			return academy, score_table
+			return score_table
 		except Exception as e:
 			print('Failed to log in:', e)
 			print('Retrying ...')
 			return None, None
 
-	def query(self, academy, score_table, query_model):
+	def query(self, score_table, query_model):
 		# A separate query module, could be used publicly.
-		result_app = ResultApp(score_table)
+		result_score_table = extract.extract(score_table, query_model)
+		result_app = ResultApp(result_score_table)
 
 if __name__ == '__main__':
 	app = ScoreCheckerApp()
