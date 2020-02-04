@@ -63,17 +63,15 @@ class ConfigApp(object):
 		# Process the variables passed in.
 		status = True
 		fail_hint = 'Failed to proceed:' + os.linesep
-		if len(self.__ID_entry.get()) == 0: 
+		self.__ID = self.__ID_entry.get()
+		if len(self.__ID) == 0: 
 			status = False
 			fail_hint += 'Your ID should not be empty.' + os.linesep
-		else:
-			self.__ID = self.__ID_entry.get()
-
-		if len(self.__password_entry.get()) == 0:
+			
+		self.__password = self.__password_entry.get()
+		if len(self.__password) == 0:
 			status = False
 			fail_hint += 'Your password should not be empty.' + os.linesep
-		else:
-			self.__password = self.__password_entry.get()
 
 		if self.__captcha_model is None:
 			status = False 
