@@ -11,12 +11,15 @@ def load_captcha_model(filename):
 		print('Failed to load the model:', e)
 		return None
 
+def type_check(val, _type):
+	return True if type(val) in _type else False
+
+def range_check(val, lb, ub):
+	return True if type_check(val, [float, int, str]) and lb <= val <= ub else False
+
 def validate_single_key_value(key, value):
 	# single key value checks.
 	# including type_check and range_check, range check is a subset of type_check.
-
-	type_check = lambda val, _type: True if type(val) in _type else False
-	range_check = lambda val, lb, ub: True if lb <= val <= ub and type_check(val, [float, int, str]) else False
 	
 	allowed_query = {
 		'start_year': lambda val: type_check(val, [list]),
