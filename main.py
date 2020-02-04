@@ -23,22 +23,22 @@ class ScoreCheckerApp(object):
 		print('Initializing configuration app ...')
 		config_app = ConfigApp()
 		if config_app.get_status():
+			print('Fetching infomation for configuration app ...')
 			ID, password, captcha_model, query_model = config_app.get_credentials()
 		else:
 			return
 
-		while self._retries > 0:
+		score_table = None
+		while self._retries > 0 and not score_table:
 			print('Logging in, remaining retries:', self._retries)
 			score_table = self.login(ID, password, captcha_model)
-			if score_table:
-				print('Logging in successfully ...')
-				break
 			self._retries -= 1
+
 		if self._retries == 0:
 			print('Failed to log in, please check your connection.')
 			return
 
-		print('Querying ...')
+		print('Logging in successfully, querying ...')
 		self.query(score_table, query_model)
 		print('Querying successfully, see you next time.')
 		
