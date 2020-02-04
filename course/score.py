@@ -14,7 +14,7 @@ def calculate_single_GPA(score):
 def calculate_GPA(score_table):
 	# calculate GPA from selected courses
 	if len(score_table) == 0:
-		return (0, 0) # when the score table is empty
+		return 0.0 # when the score table is empty
 
 	total_GPA, total_credit = [0] * 2
 	for item in score_table:
@@ -30,7 +30,7 @@ def calculate_GPA(score_table):
 def calculate_score(score_table):
 	# calculate score from selected courses
 	if len(score_table) == 0:
-		return (0, 0) # when the score table is empty
+		return 0.0 # when the score table is empty
 
 	total_score, total_credit = [0] * 2
 	for item in score_table:
