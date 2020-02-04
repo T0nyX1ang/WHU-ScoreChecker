@@ -1,6 +1,5 @@
 from .query import *
 from .optimize import *
-from ast import literal_eval
 
 def convert(key):
 	lookup_table = {
