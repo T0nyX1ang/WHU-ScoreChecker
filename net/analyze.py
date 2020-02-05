@@ -52,27 +52,37 @@ def get_csrf_token(content):
 		print('Failed to extract CSRF token.')
 		return None
 
-def get_score_table(content):
-	# get score table
+def __convert_to_float(score):
+	if len(score) == 0:
+		return None
+	else:
+		return float(score)
+
+def get_raw_score_table(content):
+	# get raw score table
 	if content is None:
 		return None
-	print('Fetching score table ...')
-	score_table = []
+	print('Fetching raw score table ...')
 	try:
 		b = bs4.BeautifulSoup(content, features='lxml')
-		table_row = b.find_all('td')
-		single, rec = [], 0
-		for current in table_row:
-			item = current.get_text().replace('\n','').replace('\r','').replace(' ','').replace('\t','')
-			if rec in [0, 1, 4, 6, 7, 8, 9, 10]:
-				single.append(item)
-			rec += 1
-			if (rec == 12):
-				score_table.append(single)
-				single, rec = [], 0
-		score_table.sort(key=lambda stat:(stat[5], stat[6]))
-		print('Score table has been fetched successfully ...')
-		return score_table
+		raw_score_table = b.find_all('td')
+		print('Raw score table has been fetched successfully ...')
+		return raw_score_table
 	except Exception as e:
-		print('Failed to fetch the score table.')
+		print('Failed to fetch the raw score table.')
 		return None
+
+def get_score_table(raw_score_table):
+	print('Refining raw score table ...')
+	score_table, single, rec = set(), [], 0
+	for current in raw_score_table:
+		item = current.get_text().replace('\n','').replace('\r','').replace(' ','').replace('\t','')
+		single.append(item)
+		rec += 1
+		if (rec == 12):
+			# convert data types
+			refined_single = (single[0], single[1], __convert_to_float(single[4]), single[6], \
+							  single[7], int(single[8]), int(single[9]), __convert_to_float(single[10]))
+			score_table.add(refined_single)
+			single, rec = [], 0
+	return score_table
