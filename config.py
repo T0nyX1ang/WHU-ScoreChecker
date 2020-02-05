@@ -13,7 +13,7 @@ class ConfigApp(object):
 		# Initialization for the GUI. All of the variables are private here.
 		self.__main_window = tkinter.Tk()
 		self.__main_window.title("Configurations")
-		self.__main_window.geometry("400x150+600+300")
+		self.__set__geometry(400, 150)
 		self.__status = False
 
 		self.__ID = ''
@@ -25,7 +25,7 @@ class ConfigApp(object):
 		self.__password = ''
 		self.__password_label = tkinter.Label(self.__main_window, text="Password")
 		self.__password_label.grid(row=1, column=0, padx=20, pady=10)
-		self.__password_entry = tkinter.Entry(self.__main_window, width=30)
+		self.__password_entry = tkinter.Entry(self.__main_window, width=30, show='●')
 		self.__password_entry.grid(row=1, column=1, padx=20, pady=10)
 
 		self.__button_frame = tkinter.Frame(self.__main_window)
@@ -40,6 +40,12 @@ class ConfigApp(object):
 		self.__proceed_button.pack(side='left', padx=10)
 
 		self.__main_window.mainloop()
+
+	def __set__geometry(self, width, height):
+		# put window in the center of the screen
+		offset_width = (self.__main_window.winfo_screenwidth() - width) // 5 * 2
+		offset_height = (self.__main_window.winfo_screenheight() - height) // 5 * 2
+		self.__main_window.geometry("%sx%s+%s+%s" % (width, height, offset_width, offset_height))
 
 	def __load_model(self, model_category, filetypes, loader):
 		# generic model loader, filetypes work as a filter, loader is a function
