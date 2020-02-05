@@ -4,9 +4,9 @@ import time
 import hashlib
 from config import ConfigApp
 from course import extract
+from image import predict
 from model import loader
 from net import message, analyze
-from predict import predict
 from result import ResultApp
 
 class ScoreCheckerApp(object):
@@ -29,12 +29,12 @@ class ScoreCheckerApp(object):
 			return
 
 		score_table = None
-		while self._retries > 0 and not score_table:
+		while self._retries >= 0 and not score_table:
 			print('Logging in, remaining retries:', self._retries)
 			score_table = self.login(ID, password, captcha_model)
 			self._retries -= 1
 
-		if self._retries == 0:
+		if self._retries < 0:
 			print('Failed to log in, please check your connection.')
 			return
 
@@ -49,7 +49,7 @@ class ScoreCheckerApp(object):
 			captcha_id = analyze.get_captcha_id(base_content)
 			captcha_url = self.__url + captcha_id
 			captcha_content = self.__message_handler.get(url=captcha_url)
-			captcha = predict(captcha_content, captcha_model)
+			captcha = predict.predict_captcha(captcha_content, captcha_model)
 			login_id = analyze.get_login_id(base_content)
 			login_url = self.__url + login_id
 			login_data = {
@@ -64,12 +64,13 @@ class ScoreCheckerApp(object):
 			score_table_url = self.__url + '/servlet/Svlt_QueryStuScore?csrftoken=' + csrf_token + '&year=0&term=&learnType=&scoreFlag=0&t=' + \
 				str(time.ctime()).replace('  ', ' ') + ' GMT 0800 (中国标准时间)'
 			score_table_content = self.__message_handler.get(url=score_table_url)
-			score_table = analyze.get_score_table(score_table_content)
+			raw_score_table = analyze.get_raw_score_table(score_table_content)
+			score_table = analyze.get_score_table(raw_score_table)
 			return score_table
 		except Exception as e:
 			print('Failed to log in:', e)
 			print('Retrying ...')
-			return None, None
+			return None
 
 	def query(self, score_table, query_model):
 		# A separate query module, could be used publicly.
