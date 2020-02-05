@@ -1,4 +1,5 @@
 import cv2
+import itertools
 
 def metric(x1, l1, x2, l2):
 	# A 1d metric to define the distance between two lines
@@ -43,7 +44,7 @@ def partition(im):
 
 	while len(current_parts) < 4:
 		val = max(current_parts, key=lambda x:(x[2] / x[3], x[2] * x[3]))
-		sp_rect1, sp_rect2 = self.split(val)
+		sp_rect1, sp_rect2 = split(val)
 		current_parts.remove(val)
 		current_parts.append(sp_rect1)
 		current_parts.append(sp_rect2) # replacing a single rectangle with two
