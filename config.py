@@ -41,23 +41,25 @@ class ConfigApp(object):
 
 		self.__main_window.mainloop()
 
+	def __load_model(self, model_category, filetypes, loader):
+		# generic model loader, filetypes work as a filter, loader is a function
+		model_category = model_category.lower()
+		capitalized_model_category = model_category.capitalize()
+		model_filename = tkinter.filedialog.askopenfilename(filetypes=filetypes, title='Load %s Model' % capitalized_model_category)
+		model = loader(model_filename)
+		if model is None:
+			tkinter.messagebox.showerror('Load %s Model' % capitalized_model_category, 'Failed to load the %s model, please retry.' % model_category)
+		else:
+			tkinter.messagebox.showinfo('Load %s Model' % capitalized_model_category, 'The %s model is loaded successfully.' % model_category)
+		return model
+
 	def __load_captcha_model(self):
 		# Load a captcha model, should be HDF5 format.
-		model_filename = tkinter.filedialog.askopenfilename(filetypes=[('HDF5 format', '.hdf5')], title='Load Captcha Model')
-		self.__captcha_model = loader.load_captcha_model(model_filename)
-		if self.__captcha_model is None:
-			tkinter.messagebox.showerror("Load Captcha Model", "Failed to load the captcha model, please retry.")
-		else:
-			tkinter.messagebox.showinfo("Load Captcha Model", "The captcha model is loaded successfully.")
+		self.__captcha_model = self.__load_model(model_category='captcha', filetypes=[('HDF5 format', '.hdf5')], loader=loader.load_captcha_model)
 
 	def __load_query_model(self):
 		# Load a query model, should be JSON format.
-		model_filename = tkinter.filedialog.askopenfilename(filetypes=[('JSON format', '.json')], title='Load Query Model')
-		self.__query_model = loader.load_query_model(model_filename)
-		if self.__query_model is None:
-			tkinter.messagebox.showerror("Load Query Model", "Failed to load the query model, please retry.")
-		else:
-			tkinter.messagebox.showinfo("Load Query Model", "The query model is loaded successfully.")
+		self.__query_model = self.__load_model(model_category='query', filetypes=[('JSON format', '.json')], loader=loader.load_query_model)
 
 	def __proceed(self):
 		# Process the variables passed in.
