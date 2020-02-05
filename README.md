@@ -5,7 +5,7 @@ A simple, open-source and model-driven score checker for WHU.
 ## Important notice
 
 * __Although enough freedom is given, you should be check your score carefully.__
-* __This project uses Python 3.7, and works fine with Python 3.6+.__
+* __This project uses Python 3.7, and works fine with Python 3.5-3.7.__
 
 ## Usage
 
