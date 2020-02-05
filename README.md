@@ -1,5 +1,7 @@
 # WHU-ScoreChecker
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/7846677b112ddb5609a6/maintainability)](https://codeclimate.com/github/T0nyX1ang/WHU-ScoreChecker/maintainability)
+
 A simple, open-source and model-driven score checker for WHU.
 
 ## Important notice
