@@ -1,11 +1,5 @@
 # a module to calculate GPA and credit weight-based score
 
-def convert_to_float(score):
-	if len(score) == 0:
-		return 0.0
-	else:
-		return float(score)
-
 def calculate_single_GPA(score):
 	# use a lookup table to calculate a single GPA
 	lookup_table = [0.0] * 60 + [1.0] * 4 + [1.5] * 4 + [2.0] * 4 + [2.3] * 3 + [2.7] * 3 + [3.0] * 4 + [3.3] * 3 + [3.7] * 5 + [4.0] * 11
@@ -18,9 +12,9 @@ def calculate_GPA(score_table):
 
 	total_GPA, total_credit = [0] * 2
 	for item in score_table:
-		single_score = convert_to_float(item[7])
+		single_score = item[7]
 		single_GPA = calculate_single_GPA(single_score)
-		single_credit = convert_to_float(item[2])
+		single_credit = item[2]
 		total_GPA += (single_GPA * single_credit)
 		total_credit += single_credit
 	
@@ -34,8 +28,10 @@ def calculate_score(score_table):
 
 	total_score, total_credit = [0] * 2
 	for item in score_table:
-		single_score = convert_to_float(item[7])
-		single_credit = convert_to_float(item[2])
+		single_score = item[7]
+		if single_score is None:
+			single_score = 0.0
+		single_credit = item[2]
 		total_score += (single_score * single_credit)
 		total_credit += single_credit
 	
