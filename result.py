@@ -27,7 +27,17 @@ class ResultApp(object):
 		for i in range(0, len(self._columns)):
 			self._score_view.column(self._columns[i], anchor='center', width=self._columns_width[i])
 			self._score_view.heading(self._columns[i], text=self._columns[i])
+
+		# auto-sorting feature
+		score_table = list(score_table)
+		score_table.sort(key=lambda col:(col[5], col[6]))
+
 		for val in score_table:
-			self._score_view.insert('', 'end', values=tuple(val))
+			# deal with score that does not come out
+			if val[7] is None:
+				val = list(val)
+				val[7] = ''
+				val = tuple(val)
+			self._score_view.insert('', 'end', values=val)
 		self._score_view.pack()
 		self._main_window.mainloop()
