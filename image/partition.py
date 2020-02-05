@@ -1,11 +1,15 @@
 import cv2
 
+def metric(x1, l1, x2, l2):
+	# A 1d metric to define the distance between two lines
+	# x1, x2 are coordinates, l1, l2 are lengths
+	return min([abs(x1 + l1 - x2), abs(x2 + l2 - x1), abs(x1 - x2)])
+
 def distance(rect1, rect2):
-	# A metric to define the distance between two rectangles.
+	# A 2d metric to define the distance between two rectangles.
 	x1, y1, w1, h1 = rect1
 	x2, y2, w2, h2 = rect2
-	return (min([abs(x1 + w1 - x2), abs(x2 + w2 - x1), abs(x1 - x2)]), \
-		min([abs(y1 + h1 - y2), abs(y2 + h2 - y1), abs(y1 - y2)]))
+	return (metric(x1, w1, x2, w2), metric(y1, h1, y2, h2))
 
 def merge(rect1, rect2):
 	# merge two seperate rectangles.
