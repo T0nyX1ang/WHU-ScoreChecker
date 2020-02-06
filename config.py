@@ -4,6 +4,7 @@ import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
 from model import loader
+from base import BaseApp
 
 class ConfigApp(object):
 	# GUI for the config app.
@@ -11,9 +12,7 @@ class ConfigApp(object):
 
 	def __init__(self):
 		# Initialization for the GUI. All of the variables are private here.
-		self.__main_window = tkinter.Tk()
-		self.__main_window.title("Configurations")
-		self.__set__geometry(400, 150)
+		self.__main_window = BaseApp("Configurations", 400, 150)
 		self.__status = False
 
 		self.__ID = ''
@@ -40,12 +39,6 @@ class ConfigApp(object):
 		self.__proceed_button.pack(side='left', padx=10)
 
 		self.__main_window.mainloop()
-
-	def __set__geometry(self, width, height):
-		# put window in the center of the screen
-		offset_width = (self.__main_window.winfo_screenwidth() - width) // 5 * 2
-		offset_height = (self.__main_window.winfo_screenheight() - height) // 5 * 2
-		self.__main_window.geometry("%sx%s+%s+%s" % (width, height, offset_width, offset_height))
 
 	def __load_model(self, model_category, filetypes, loader):
 		# generic model loader, filetypes work as a filter, loader is a function

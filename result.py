@@ -1,13 +1,12 @@
 import tkinter
 import tkinter.ttk
+from base import BaseApp
 from course import score
 
 class ResultApp(object):
 	def __init__(self, score_table):
 		# This app should be utilized to show score results
-		self.__main_window = tkinter.Tk()
-		self.__main_window.title("Query Results")
-		self.__set__geometry(800, 600)
+		self.__main_window = BaseApp("Query Results", 800, 600)
 		self.__score_frame = tkinter.Frame(self.__main_window)
 
 		# Information
