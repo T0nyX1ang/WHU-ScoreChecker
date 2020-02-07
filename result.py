@@ -17,7 +17,8 @@ class ResultApp(object):
 
         # score table
         self.__columns = ('课程名称', '课程类型', '学分', '授课学院', '学习类型', '学年', '学期', '成绩')
-        self.__columns_width = (200, 120, 40, 160, 80, 40, 40, 60)              
+        self.__columns_width = (200, 120, 40, 160, 80, 40, 40, 60)
+
         self.__score_frame.pack(expand=True)
         self.__score_view_scrollbar = tkinter.Scrollbar(self.__score_frame)
         self.__score_view = tkinter.ttk.Treeview(self.__score_frame, show='headings', columns=self.__columns, height=20, yscrollcommand=self.__score_view_scrollbar.set)
@@ -29,7 +30,7 @@ class ResultApp(object):
 
         # auto-sorting feature
         score_table = list(score_table)
-        score_table.sort(key=lambda col:(col[5], col[6]))
+        score_table.sort(key=lambda col:(col[5], col[6], col[3], col[2]))
 
         for val in score_table:
             # deal with score that does not come out
@@ -40,9 +41,3 @@ class ResultApp(object):
             self.__score_view.insert('', 'end', values=val)
         self.__score_view.pack()
         self.__main_window.mainloop()
-
-    def __set__geometry(self, width, height):
-        # put window in the center of the screen
-        offset_width = (self.__main_window.winfo_screenwidth() - width) // 5 * 2
-        offset_height = (self.__main_window.winfo_screenheight() - height) // 5 * 2
-        self.__main_window.geometry("%sx%s+%s+%s" % (width, height, offset_width, offset_height))

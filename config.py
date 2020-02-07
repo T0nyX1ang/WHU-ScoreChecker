@@ -27,9 +27,11 @@ class ConfigApp(object):
             print('Trying to load configurations from disk ...')
             self.__load_config()
 
-        if self.get_status():
-            return # return initially if config is loaded successfully
+        if not self.get_status():
+            self.__set_layout()
 
+    def __set_layout(self):
+        # set layouts
         self.__main_window = BaseApp("Configurations", 600, 200)
         self.__main_frame = tkinter.Frame(self.__main_window)
         self.__main_frame.pack(expand=True)
@@ -91,7 +93,7 @@ class ConfigApp(object):
             status = False
             fail_hint += 'Your ID should not be empty.' + os.linesep
 
-        self.__password = MD5.new(self.__password_entry.get().encode()).digest().hex()
+        self.__password = MD5.new(self.__password_entry.get().encode()).hexdigest()
         if self.__password == 'd41d8cd98f00b204e9800998ecf8427e': # empty string hash
             status = False
             fail_hint += 'Your password should not be empty.' + os.linesep
