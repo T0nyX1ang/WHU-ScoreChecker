@@ -130,3 +130,6 @@ dmypy.json
 
 # captcha model
 captcha_model.hdf5
+
+# config file
+checker.cfg
