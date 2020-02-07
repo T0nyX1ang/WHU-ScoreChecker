@@ -1,11 +1,8 @@
 import os
-import json
 import time
-import hashlib
 from config import ConfigApp
 from course import extract
 from image import predict
-from model import loader
 from net import message, analyze
 from result import ResultApp
 
@@ -56,7 +53,7 @@ class ScoreCheckerApp(object):
 				'timestamp': int(time.time() * 1000),
 				'jwb': '%E6%AD%A6%E5%A4%A7%E6%9C%AC%E7%A7%91%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F',
 				'id': ID,
-				'pwd': hashlib.md5(password.encode()).hexdigest(),
+				'pwd': password,
 				'xdvfb': captcha,
 			}
 			login_content = self.__message_handler.post(url=login_url, data=login_data)
