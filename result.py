@@ -6,7 +6,7 @@ from course import score
 class ResultApp(object):
 	def __init__(self, score_table):
 		# This app should be utilized to show score results
-		self.__main_window = BaseApp("Query Results", 800, 600)
+		self.__main_window = BaseApp("Query Results", 960, 640)
 		self.__score_frame = tkinter.Frame(self.__main_window)
 
 		# Information
@@ -17,7 +17,7 @@ class ResultApp(object):
 
 		# score table
 		self.__columns = ('课程名称', '课程类型', '学分', '授课学院', '学习类型', '学年', '学期', '成绩')
-		self.__columns_width = (200, 80, 40, 120, 80, 40, 40, 60)				
+		self.__columns_width = (200, 120, 40, 160, 80, 40, 40, 60)				
 		self.__score_frame.pack(expand=True)
 		self.__score_view_scrollbar = tkinter.Scrollbar(self.__score_frame)
 		self.__score_view = tkinter.ttk.Treeview(self.__score_frame, show='headings', columns=self.__columns, height=20, yscrollcommand=self.__score_view_scrollbar.set)
