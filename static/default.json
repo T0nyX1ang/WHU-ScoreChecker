@@ -1,5 +1,8 @@
 {
 	"query": {
-
-	}
+		"default_score_table": {
+			"score_come_out": true
+		}
+	},
+	"display": "default_score_table"
 }
