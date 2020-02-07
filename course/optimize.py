@@ -1,14 +1,20 @@
+"""
+Main optimization model, construct your optimizers here.
+
+Make sure the model is registered in the query part properly.
+"""
 import itertools
 from .score import calculate_score
 
-# main optimization model, construct your optimizers here.
-# default optimizer is classifier
 
 def classifier(major_complusory, major_selective, selection):
-    # this matches the classifier part in query part
-    # major_complusory is all required courses
-    # select a number of courses in major_selective courses
+    """
+    Default optimizer.
 
+    'major_complusory': a major complusory course score table.
+    'major_selective': a major selective course score table.
+    'selection': selections from 'major_selective'
+    """
     if selection > len(major_selective):
         selection = len(major_selective)
 
