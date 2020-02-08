@@ -20,17 +20,17 @@ def convert(key):
     study_type, course_type, course_academy, course_name
     """
     lookup_table = {
-        'start_year': lambda s, v: search_start_year(s, v),
-        'stop_year': lambda s, v: search_stop_year(s, v),
-        'score_come_out': lambda s, v: search_score_come_out(s, v),
-        'min_score': lambda s, v: search_min_score(s, v),
-        'max_score': lambda s, v: search_max_score(s, v),
-        'min_credit': lambda s, v: search_min_credit(s, v),
-        'max_credit': lambda s, v: search_max_credit(s, v),
-        'study_type': lambda s, v: search_study_type(s, v),
-        'course_type': lambda s, v: search_course_type(s, v),
-        'course_academy': lambda s, v: search_course_academy(s, v),
-        'course_name': lambda s, v: search_course_name(s, v),
+        'start_year': search_start_year,
+        'stop_year': search_stop_year,
+        'score_come_out': search_score_come_out,
+        'min_score': search_min_score,
+        'max_score': search_max_score,
+        'min_credit': search_min_credit,
+        'max_credit': search_max_credit,
+        'study_type': search_study_type,
+        'course_type': search_course_type,
+        'course_academy': search_course_academy,
+        'course_name': search_course_name,
     }
     return lookup_table[key]
 
