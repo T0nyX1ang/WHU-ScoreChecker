@@ -1,6 +1,8 @@
 # WHU-ScoreChecker
 
+![WHU-ScoreChecker App](https://github.com/T0nyX1ang/WHU-ScoreChecker/workflows/WHU-ScoreChecker%20App/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/31549674927500a089ca/maintainability)](https://codeclimate.com/github/T0nyX1ang/WHU-ScoreChecker/maintainability)
+[![License](https://img.shields.io/github/license/T0nyX1ang/WHU-ScoreChecker?color=blue)](github.com/T0nyX1ang/WHU-ScoreChecker/blob/master/LICENSE)
 
 A simple, open-source and model-driven score checker for WHU.
 
@@ -52,6 +54,12 @@ A simple, open-source and model-driven score checker for WHU.
 This project uses `MIT License`. Please refer to `LICENSE` for more details.
 
 ## Release notes
+
+### Version 1.0.1
+
+* Add documents and fix lint issues.
+* Add a saving configurations feature.
+* Fix several bugs.
 
 ### Version 1.0.0
 
