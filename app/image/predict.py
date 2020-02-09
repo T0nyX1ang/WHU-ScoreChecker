@@ -22,9 +22,10 @@ def predict_captcha(bytes_im, model):
     captcha = ''
     convert = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     if bytes_im is None:
-        print('Please check your network.')
+        print('You should load an image to predict its captcha.')
+        return captcha
 
-    if model is not None:
+    if model:
         array_im = numpy.asarray(bytearray(bytes_im), dtype='uint8')
         proc_im = preprocess(array_im)
         parts = partition(proc_im)
@@ -36,5 +37,4 @@ def predict_captcha(bytes_im, model):
             letter = numpy.expand_dims(letter, axis=0)
             prediction = model.predict(letter)  # predict the letter
             captcha += convert[numpy.argmax(prediction)]
-
     return captcha
