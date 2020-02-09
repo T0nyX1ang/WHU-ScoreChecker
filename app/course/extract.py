@@ -40,7 +40,7 @@ def extract(score_table, query_model):
     Extract required information from a score table based on the query model.
 
     This is the main module, the results will be sent to the result app.
-    If you want to use the model separately, you must validate the model.
+    If you want to use the model separately, you must validate the model first.
     """
     if not query_model.get('display'):
         return score_table
