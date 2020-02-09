@@ -2,6 +2,7 @@
 
 ![WHU-ScoreChecker App](https://github.com/T0nyX1ang/WHU-ScoreChecker/workflows/WHU-ScoreChecker%20App/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/31549674927500a089ca/maintainability)](https://codeclimate.com/github/T0nyX1ang/WHU-ScoreChecker/maintainability)
+[![codecov](https://codecov.io/gh/T0nyX1ang/WHU-ScoreChecker/branch/master/graph/badge.svg)](https://codecov.io/gh/T0nyX1ang/WHU-ScoreChecker)
 ![License](https://img.shields.io/github/license/T0nyX1ang/WHU-ScoreChecker?color=blue)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/T0nyX1ang/WHU-ScoreChecker)
 

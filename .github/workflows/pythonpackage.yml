@@ -36,4 +36,5 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
+        name: "WHU-ScoreChecker App"
         fail_ci_if_error: true
