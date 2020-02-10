@@ -1,0 +1,17 @@
+{
+	"query": {
+		"invalid_key": {
+			"start_year": [2017, 1],
+			"stop_year": [2018, 3],
+			"score_come_out": true,
+			"min_score": 90.0,
+			"max_score": 98.0,
+			"min_credit": 0.5,
+			"max_credit": 5.0,
+			"course_academy": [],
+			"course_name": [],
+			"invalid_key": "invalid_value"
+		}
+	}, 
+	"display": "invalid_key"
+}
