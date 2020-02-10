@@ -26,7 +26,7 @@ def get_captcha_id(content):
         ]
         result = [b.select(val) for val in search_string if val not in styles]
         if len(result) != 1:
-            raise ValueError('')
+            raise ValueError('Multiple captcha images found, please retry.')
         captcha_id = result[0][0]['src']
         print('Captcha ID is set to:', captcha_id)
         return captcha_id
