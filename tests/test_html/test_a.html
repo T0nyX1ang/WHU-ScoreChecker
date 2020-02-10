@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta id="i18n_pagename" content="index-common">
+    <meta http-equiv="Content-Type" content="no-cache;charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache,consolemust-revalidate">
+    <meta http-equiv="expires" content="0">
+
+    <style>
+        #captcha-img2{
+            text-align: center;
+            display: none;
+            height: 55px;
+            line-height: 55px;
+            width: 100%;
+            background-color: #FFFFBB;
+            font-size: 15px;
+        }
+        #captcha-img3{
+            text-align: center;
+            display: none;
+            height: 55px;
+            line-height: 55px;
+            width: 100%;
+            background-color: #FFFFBB;
+            font-size: 15px;
+        }
+        #captcha-img4{
+            text-align: center;
+            display: none;
+            height: 55px;
+            line-height: 55px;
+            width: 100%;
+            background-color: #FFFFBB;
+            font-size: 15px;
+        }
+        #captcha-img{
+            text-align: center;
+            display: none;
+            height: 55px;
+            line-height: 55px;
+            width: 100%;
+            background-color: #FFFFBB;
+            font-size: 15px;
+        }
+    </style>
+
+<body>
+        <div id="loginBox">
+            <form action="/here_is_the_login_page.html" method="post" name="form1" onsubmit="return verification();">
+                    <tr>
+                        <td>
+                            <img id="captcha-img" alt="验证码" src="/fake.html"/>
+                        </td>
+                        <td style="text-align: left;" colspan="3">
+                            <div style="height:34px;margin:5px 5px 5px 5px;float:left;">
+                                <img id="captcha-img1" class="hide" name="sleep" alt="验证码" src="/correct.html"/>
+                                <img id="captcha-img2" class="show" name="eat" alt="验证码" src="/fake.html"/>
+                                <img id="captcha-img3" class="hide" name="run" alt="验证码" src="/fake.html"/>
+                                <img id="captcha-img4" class="show" name="fly" alt="验证码" src="/fake.html"/>
+                            </div>
+                        </td>
+                    </tr>
+            </form>
+        </div>
+</body>
+</html>
