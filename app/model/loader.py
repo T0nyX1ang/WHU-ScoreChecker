@@ -70,10 +70,10 @@ def validate_single_key_value(key, value):
     }
 
     if key not in allowed_query:
-        raise ValueError('Your key [%s] is not in the allowed list.' % key)
+        raise KeyError('Your key [%s] is not in the allowed list.' % key)
     elif not allowed_query[key](value):
         raise ValueError(
-            'Your key-value pair [%s: %s] does not pass the check' %
+            'Your key-value pair [%s: %s] does not pass the check.' %
             (key, value))
 
 
@@ -99,7 +99,7 @@ def validate_display_model(model):
     'display' keys should be in the 'query' keys
     """
     if model.get('display') and model['display'] not in model['query'].keys():
-        raise ValueError(
+        raise KeyError(
             'Your display score table name [%s] must append in the query keys.'
             % model['display'])
 
