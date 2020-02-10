@@ -46,9 +46,9 @@ A simple, open-source and model-driven score checker for WHU.
 ### Dev side (For developers)
 
 * Some of the codes here can be utilized and applied in your own project, we recommend these:
-	1. `./image` and `./model` tools with captcha model could be implemented in captcha recognition.
-	2. `./net` tools works like a session, and could be implemented in similar condition.
-	3. `./course` tools could be implemented in course querying situation.
+	1. `./app/image` and `./app/model` tools with captcha model could be implemented in captcha recognition.
+	2. `./app/net` tools works like a session, and could be implemented in similar condition.
+	3. `./app/course` tools could be implemented in course querying situation.
 * Functions initialized with `__` are private, and can't be used publicly.
 
 ## License
