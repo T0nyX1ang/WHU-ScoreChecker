@@ -80,8 +80,7 @@ class ScoreCheckerApp(object):
                 + csrf_token + '&year=0&term=&learnType=&scoreFlag=0&t=' \
                 + str(time.ctime()).replace('  ', ' ') + ' GMT 0800 (中国标准时间)'
             score_table_content = msg_handler.get(url=score_table_url)
-            raw_score_table = analyze.get_raw_score_table(score_table_content)
-            score_table = analyze.get_score_table(raw_score_table)
+            score_table = analyze.get_score_table(score_table_content)
             return score_table
         except Exception as e:
             print('Failed to log in:', e)
