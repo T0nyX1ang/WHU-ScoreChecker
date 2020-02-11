@@ -6,6 +6,8 @@ Available functions are load_captcha_model and load_query_model.
 Models are loaded based on their filenames.
 """
 
+from util.check import type_check, range_check
+
 
 def load_captcha_model(filename):
     """
@@ -23,28 +25,6 @@ def load_captcha_model(filename):
     except Exception as e:
         print('Failed to load the model:', e)
         return None
-
-
-def type_check(val, _type):
-    """
-    Data type validation.
-
-    Check a value's type ('val') in a type list ('_type').
-    """
-    return True if type(val) in _type else False
-
-
-def range_check(val, lb, ub):
-    """
-    Data range validation.
-
-    'val' should be float, int or str.
-    'lb', 'ub' should be of the same type as 'val'.
-    'lb' means lowerbound and 'ub' means upperbound.
-    """
-    return True if type_check(val, [float, int, str]) and \
-                   type(val) == type(lb) and type(val) == type(ub) and \
-                   lb <= val <= ub else False
 
 
 def validate_single_key_value(key, value):
