@@ -51,8 +51,6 @@ class TestMessage(unittest.TestCase):
 
     def test_message(self):
         m = Message()
-        self.assertIsNone(m.get(url='invalid_url'))
-        self.assertIsNone(m.post(url='invalid_url', data={'key': 'value'}))
         self.assertIsNotNone(m.get(url='http://httpbin.org', timeout=100))
         self.assertIsNotNone(m.post(url='http://httpbin.org/post', data={'key': 'value'}, timeout=100))
 
@@ -61,25 +59,21 @@ class TestAnalyze(unittest.TestCase):
 
     def test_captcha_id(self):
         self.assertEqual(get_captcha_id(test_a), '/correct.html')
-        self.assertIsNone(get_captcha_id(test_d))
-        self.assertIsNone(get_captcha_id(test_e))
-        self.assertIsNone(get_captcha_id(None))
+        self.assertRaises(AttributeError, get_captcha_id, test_d)
+        self.assertRaises(ValueError, get_captcha_id, test_e)
 
     def test_login_id(self):
         self.assertEqual(get_login_id(test_a), '/here_is_the_login_page.html')
-        self.assertIsNone(get_login_id(test_d))
-        self.assertIsNone(get_login_id(None))
+        self.assertRaises(AttributeError, get_login_id, test_d)
 
     def test_csrf_token(self):
         self.assertEqual(get_csrf_token(test_b), '01234567-89ab-cdef-fedc-ba9876543210')
-        self.assertIsNone(get_csrf_token(test_d))
-        self.assertIsNone(get_csrf_token(None))
+        self.assertRaises(ValueError, get_csrf_token, test_d)
 
     def test_score_table(self):
-        self.assertIsNone(get_score_table(None))
-        self.assertIsNone(get_score_table(test_e))
-        self.assertEqual(get_score_table(test_d), set())
         self.assertEqual(get_score_table(test_c), {
             ('AAAAAA', '专业选修', 3.0, 'CCCCCC', '普通', 2019, 1, None),
             ('aaaaaa', '专业必修', 6.0, 'cccccc', '普通', 2018, 2, 92.0)
         })
+        self.assertEqual(get_score_table(test_d), set())
+        self.assertRaises(ValueError, get_score_table, test_e)
