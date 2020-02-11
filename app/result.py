@@ -10,7 +10,7 @@ from base import BaseApp
 from course import score
 
 
-class ResultApp(object):
+class ResultApp(BaseApp):
     """
     GUI for the result app.
 
@@ -23,8 +23,8 @@ class ResultApp(object):
 
         This app should be utilized to show score results.
         """
-        self.__main_window = BaseApp("Query Results", 960, 640)
-        self.__score_frame = tkinter.Frame(self.__main_window)
+        super(ResultApp, self).__init__("Query Results", 960, 640)
+        self.__score_frame = tkinter.Frame(self)
 
         # Information
         self.__GPA = score.calculate_gpa(score_table)
@@ -69,4 +69,4 @@ class ResultApp(object):
                 val = tuple(val)
             self.__score_view.insert('', 'end', values=val)
         self.__score_view.pack()
-        self.__main_window.mainloop()
+        self.mainloop()

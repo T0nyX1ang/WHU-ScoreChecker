@@ -12,14 +12,14 @@ import keyring
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
-from model import loader
+from loader import load_captcha_model, load_query_model
 from base import BaseApp
 from Crypto.Cipher import AES
 from Crypto.Hash import MD5
 from Crypto.Random import get_random_bytes
 
 
-class ConfigApp(object):
+class ConfigApp(BaseApp):
     """
     GUI for the config app.
 
@@ -50,8 +50,8 @@ class ConfigApp(object):
 
     def __set_layout(self):
         # set layouts
-        self.__main_window = BaseApp("Configurations", 600, 200)
-        self.__main_frame = tkinter.Frame(self.__main_window)
+        super(ConfigApp, self).__init__("Configurations", 600, 200)
+        self.__main_frame = tkinter.Frame(self)
         self.__main_frame.pack(expand=True)
 
         self.__ID_label = tkinter.Label(self.__main_frame, text="ID")
@@ -96,8 +96,7 @@ class ConfigApp(object):
             command=self.__enable_save_warning)
         self.__config_box['selectcolor'] = self.__config_box['bg']
         self.__config_box.grid(row=3, column=0, columnspan=2, padx=20, pady=10)
-
-        self.__main_window.mainloop()
+        self.mainloop()
 
     def __load_model(self, model_category, filetypes, loader):
         # Generic model loader.
@@ -125,7 +124,7 @@ class ConfigApp(object):
         self.__captcha_model = self.__load_model(
             model_category='captcha',
             filetypes=[('HDF5 format', '.hdf5')],
-            loader=loader.load_captcha_model
+            loader=load_captcha_model
         )
 
     def __load_query_model(self):
@@ -134,7 +133,7 @@ class ConfigApp(object):
         self.__query_model = self.__load_model(
             model_category='query',
             filetypes=[('JSON format', '.json')],
-            loader=loader.load_query_model
+            loader=load_query_model
         )
 
     def __proceed(self):
@@ -196,10 +195,10 @@ Will you still enable this mode?"
             self.__ID = config['ID']
             self.__password = config['password']
             self.__captcha_model = config[
-                'captcha_model_path'], loader.load_captcha_model(
+                'captcha_model_path'], load_captcha_model(
                     config['captcha_model_path'])
             self.__query_model = config[
-                'query_model_path'], loader.load_query_model(
+                'query_model_path'], load_query_model(
                     config['query_model_path'])
         else:
             print('Failed to load configurations from file, removing it ...')
