@@ -25,11 +25,6 @@ class ScoreCheckerApp(object):
         Just invoke this function to use it.
         """
         self.__retries = retries  # global retry counter
-        self.__control()
-
-    def __control(self):
-        # This part is the main control part, containing configuration,
-        # login and query.
         print('Initializing configuration app ...')
         capp = ConfigApp()
         if capp.get_status():
@@ -40,19 +35,11 @@ class ScoreCheckerApp(object):
 
         score_table = auth_procedure(_id, password, captcha_model,
                                      retries=self.__retries)
-        if not score_table:
-            return
-
-        print('Authenticating successfully, querying ...')
-        self.__query(score_table, query_model)
-        print('Querying successfully, see you next time.')
-
-    def __query(self, score_table, query_model):
-        # A query module.
-        result_score_table = extract.extract(score_table, query_model)
-        rapp = ResultApp(result_score_table)
-        rapp.run()
-
+        if score_table:
+            print('Authenticating successfully, querying ...')
+            result_score_table = extract.extract(score_table, query_model)
+            ResultApp(result_score_table)
+            print('Querying successfully, see you next time.')
 
 if __name__ == '__main__':
     app = ScoreCheckerApp()
