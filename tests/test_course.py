@@ -3,6 +3,7 @@ import unittest
 from app.course.extract import *
 from app.course.query import *
 from app.course.score import *
+from app.course.optimize import *
 
 test_score_table = {
     ('课程01', '公共必修', 0.5, '学院01', '普通', 2016, 1, 89.0),
@@ -294,6 +295,9 @@ class TestScore(unittest.TestCase):
             (1.5 + 2.5 + 5.5 + 3.0))
 
 
-# class TestOptimize(unittest.TestCase):
-#     # The tests will come out when this feature comes out fully.
-#     pass
+class TestOptimize(unittest.TestCase):
+    # The tests will come out when this feature comes out fully.
+    # here is only an simple test to show this feature can run.
+
+    def test_classifier_optimizer(self):
+        self.assertEqual(classifier([], [], 0), [])
