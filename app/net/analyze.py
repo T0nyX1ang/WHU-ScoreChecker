@@ -15,24 +15,20 @@ def get_captcha_id(content):
 
     The captcha ID is extracted by filtering non-displaying image tags.
     """
-    try:
-        print('Extracting captcha ID ...')
-        b = bs4.BeautifulSoup(content, features='lxml')
-        styles = b.style.get_text()
-        # As the captcha image is exclusive, the result is ONLY one.
-        search_string = [
-            '#captcha-img1', '#captcha-img2', '#captcha-img3', '#captcha-img4',
-            '#captcha-img'
-        ]
-        result = [b.select(val) for val in search_string if val not in styles]
-        if len(result) != 1:
-            raise ValueError('Multiple captcha images found, please retry.')
-        captcha_id = result[0][0]['src']
-        print('Captcha ID is set to:', captcha_id)
-        return captcha_id
-    except Exception as e:
-        print('Failed to extract captcha ID:', e)
-        return None
+    print('Extracting captcha ID ...')
+    b = bs4.BeautifulSoup(content, features='lxml')
+    styles = b.style.get_text()
+    # As the captcha image is exclusive, the result is ONLY one.
+    search_string = [
+        '#captcha-img1', '#captcha-img2', '#captcha-img3', '#captcha-img4',
+        '#captcha-img'
+    ]
+    result = [b.select(val) for val in search_string if val not in styles]
+    if len(result) != 1:
+        raise ValueError('Multiple captcha images found, please retry.')
+    captcha_id = result[0][0]['src']
+    print('Captcha ID is set to:', captcha_id)
+    return captcha_id
 
 
 def get_login_id(content):
@@ -42,15 +38,11 @@ def get_login_id(content):
     The login ID is extracted from [POST] form hyperlink.
     """
     print('Extracting login ID ...')
-    try:
-        b = bs4.BeautifulSoup(content, features='lxml')
-        login_box = b.find(id='loginBox')
-        login_id = login_box.form['action']
-        print('Login ID is set to:', login_id)
-        return login_id
-    except Exception as e:
-        print('Failed to extract login ID:', e)
-        return None
+    b = bs4.BeautifulSoup(content, features='lxml')
+    login_box = b.find(id='loginBox')
+    login_id = login_box.form['action']
+    print('Login ID is set to:', login_id)
+    return login_id
 
 
 def get_csrf_token(content):
@@ -60,18 +52,14 @@ def get_csrf_token(content):
     The CSRF token is extracted when the user logs in successfully.
     """
     print('Extracting CSRF token ...')
-    try:
-        b = bs4.BeautifulSoup(content, features='lxml')
-        csrf_prefetch = str(b.find(id='system'))
-        start = csrf_prefetch.find('csrftoken=')
-        if start == -1:
-            raise ValueError('Unable to find a CSRF token in this page.')
-        csrf_token = csrf_prefetch[start + 10:start + 46]
-        print('CSRF token is set to:', csrf_token)
-        return csrf_token
-    except Exception as e:
-        print('Failed to extract CSRF token:', e)
-        return None
+    b = bs4.BeautifulSoup(content, features='lxml')
+    csrf_prefetch = str(b.find(id='system'))
+    start = csrf_prefetch.find('csrftoken=')
+    if start == -1:
+        raise ValueError('Unable to find a CSRF token in this page.')
+    csrf_token = csrf_prefetch[start + 10:start + 46]
+    print('CSRF token is set to:', csrf_token)
+    return csrf_token
 
 
 def _convert_to_float(score):
@@ -97,25 +85,23 @@ def get_score_table(content):
                    course_academy (str), study_type (str), year (int),
                    semester (int) and score (float).
     """
-    print('Fetching raw score table ...')
-    try:
-        b = bs4.BeautifulSoup(content, features='lxml')
-        score_table = set()
-        raw_score_table = [
-            item.get_text().replace('\n', '').replace('\r', '').replace(
-                ' ', '').replace('\t', '') for item in b.find_all('td')
-        ]
-        total_course = len(raw_score_table) // 12
-        for i in range(0, total_course):
-            score_table.add(
-                (raw_score_table[i * 12], raw_score_table[i * 12 + 1],
-                 _convert_to_float(raw_score_table[i * 12 + 4]),
-                 raw_score_table[i * 12 + 6], raw_score_table[i * 12 + 7],
-                 int(raw_score_table[i * 12 + 8]),
-                 int(raw_score_table[i * 12 + 9]),
-                 _convert_to_float(raw_score_table[i * 12 + 10])))
-        print('Score table has been fetched successfully ...')
-        return score_table
-    except Exception as e:
-        print('Failed to fetch the score table:', e)
-        return None
+    print('Fetching score table ...')
+    b = bs4.BeautifulSoup(content, features='lxml')
+    score_table = set()
+    raw_score_table = [
+        item.get_text().replace('\n', '').replace('\r', '').replace(
+            ' ', '').replace('\t', '') for item in b.find_all('td')
+    ]
+    if len(raw_score_table) % 12:  # score table is parsed wrong
+        raise ValueError('The score table has missing or redundant items.')
+    total_course = len(raw_score_table) // 12
+    for i in range(0, total_course):
+        score_table.add(
+            (raw_score_table[i * 12], raw_score_table[i * 12 + 1],
+             _convert_to_float(raw_score_table[i * 12 + 4]),
+             raw_score_table[i * 12 + 6], raw_score_table[i * 12 + 7],
+             int(raw_score_table[i * 12 + 8]),
+             int(raw_score_table[i * 12 + 9]),
+             _convert_to_float(raw_score_table[i * 12 + 10])))
+    print('Score table has been fetched successfully ...')
+    return score_table

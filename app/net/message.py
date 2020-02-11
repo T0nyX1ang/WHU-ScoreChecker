@@ -32,25 +32,21 @@ class Message(object):
         'url' is the URL you want to make a request.
         'timeout' is set to 2.0 seconds on default.
         """
-        try:
-            print('Making a HTTP GET request ...')
-            # Remove Content-Type and Origin header when GET
-            self.__headers.update('Content-Type')
-            self.__headers.update('Origin')
-            response = requests.get(
-                url=url,
-                timeout=timeout,
-                headers=self.__headers.current(),
-                cookies=self.__cookies.current()
-            )
-            self.__cookies.update(response.cookies)  # Update cookies
-            # self.__headers.update('Referer', response.url)
-            content = response.content
-            print('HTTP GET response is received successfully ...')
-            return content
-        except Exception as e:
-            print('Failed to GET the page:', e)
-            return None
+        print('Making a HTTP GET request ...')
+        # Remove Content-Type and Origin header when GET
+        self.__headers.update('Content-Type')
+        self.__headers.update('Origin')
+        response = requests.get(
+            url=url,
+            timeout=timeout,
+            headers=self.__headers.current(),
+            cookies=self.__cookies.current()
+        )
+        self.__cookies.update(response.cookies)  # Update cookies
+        # self.__headers.update('Referer', response.url)
+        content = response.content
+        print('HTTP GET response is received successfully ...')
+        return content
 
     def post(self, url, data, timeout=2):
         """
@@ -59,25 +55,21 @@ class Message(object):
         'url' is the URL you want to make a request.
         'timeout' is set to 2.0 seconds on default.
         """
-        try:
-            print('Making a HTTP POST request ...')
-            # Add Content-Type and Origin header when GET
-            self.__headers.update('Content-Type',
-                                  'application/x-www-form-urlencoded'
-                                  )
-            self.__headers.update('Origin',
-                                  self.__headers.current()
-                                  ['Host'])
-            response = requests.post(url=url,
-                                     data=data,
-                                     timeout=timeout,
-                                     headers=self.__headers.current(),
-                                     cookies=self.__cookies.current())
-            self.__cookies.update(response.cookies)  # update cookies
-            # self.__headers.update('Referer', response.url)
-            content = response.content
-            print('HTTP POST response is received successfully ...')
-            return content
-        except Exception as e:
-            print('Failed to POST your data:', e)
-            return None
+        print('Making a HTTP POST request ...')
+        # Add Content-Type and Origin header when GET
+        self.__headers.update('Content-Type',
+                              'application/x-www-form-urlencoded'
+                              )
+        self.__headers.update('Origin',
+                              self.__headers.current()
+                              ['Host'])
+        response = requests.post(url=url,
+                                 data=data,
+                                 timeout=timeout,
+                                 headers=self.__headers.current(),
+                                 cookies=self.__cookies.current())
+        self.__cookies.update(response.cookies)  # update cookies
+        # self.__headers.update('Referer', response.url)
+        content = response.content
+        print('HTTP POST response is received successfully ...')
+        return content
