@@ -1,10 +1,13 @@
 import os
+import sys
+sys.path.append(os.path.join(os.getcwd(), 'app'))
 import unittest
-from app.model.loader import *
+from app.loader import *
 from keras.engine.sequential import Sequential
 
 test_query_model_dir = os.path.join(os.getcwd(), os.path.join('tests', 'test_query'))
 default_query_model_dir = os.path.join(os.getcwd(), 'static')
+
 
 class TestCaptchaModelLoader(unittest.TestCase):
 
@@ -14,34 +17,6 @@ class TestCaptchaModelLoader(unittest.TestCase):
         self.assertIsNone(load_captcha_model(1), None)
         self.assertIs(type(load_captcha_model('captcha_model.hdf5')), Sequential)
         self.assertTrue(hasattr(load_captcha_model('captcha_model.hdf5'), 'predict'))
-
-
-class TestSimpleChecks(unittest.TestCase):
-
-    def test_type_checker(self):
-        self.assertTrue(type_check(1, [float, int, str]))
-        self.assertTrue(type_check(1.0, [float, int, str]))
-        self.assertTrue(type_check('1', [float, int, str]))
-        self.assertTrue(type_check([1, 2, 3], [list]))
-        self.assertTrue(type_check(True, [bool]))
-        self.assertTrue(type_check(False, [bool]))
-        self.assertFalse(type_check([1, 2, 3], [float, int, str]))
-        self.assertFalse(type_check(1.0, [int, str]))
-        self.assertRaises(TypeError, type_check, 1, int)
-
-    def test_range_checker(self):
-        self.assertTrue(range_check(1, 0, 2))
-        self.assertTrue(range_check('hello', 'he', 'hello_world'))
-        self.assertTrue(range_check(60.0, 0.0, 100.0))
-        self.assertFalse(range_check([1, 2, 3], [1, 2], [2, 3]))
-        self.assertFalse(range_check('123', [1, 2], [2, 3]))
-        self.assertFalse(range_check(1, '0', 2))
-        self.assertFalse(range_check(1, 0, '2'))
-        self.assertFalse(range_check('1', 0, 2))
-        self.assertFalse(range_check(0, 50, 100))
-        self.assertFalse(range_check(150.0, 0.0, 100.0))
-        self.assertFalse(range_check('2016', '2017', '2018'))
-        self.assertFalse(range_check(bool, True, False))
 
 
 class TestQueryModelValidationAndLoader(unittest.TestCase):
