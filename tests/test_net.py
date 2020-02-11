@@ -47,14 +47,6 @@ class TestHeaders(unittest.TestCase):
         self.assertEqual(h.current(), headers)
 
 
-class TestMessage(unittest.TestCase):
-
-    def test_message(self):
-        m = Message()
-        self.assertIsNotNone(m.get(url='http://httpbin.org', timeout=100))
-        self.assertIsNotNone(m.post(url='http://httpbin.org/post', data={'key': 'value'}, timeout=100))
-
-
 class TestAnalyze(unittest.TestCase):
 
     def test_captcha_id(self):
