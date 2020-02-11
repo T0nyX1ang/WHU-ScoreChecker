@@ -1,5 +1,9 @@
-from app.util.check import *
 import unittest
+from app.util.check import *
+from app.util.cryptography import *
+from keyring import get_password
+
+message = b'hello world'
 
 class TestUtilChecks(unittest.TestCase):
 
@@ -27,3 +31,26 @@ class TestUtilChecks(unittest.TestCase):
         self.assertFalse(range_check(150.0, 0.0, 100.0))
         self.assertFalse(range_check('2016', '2017', '2018'))
         self.assertFalse(range_check(bool, True, False))
+
+
+class TestUtilCrypto(unittest.TestCase):
+
+    def test_encrypt_and_decrypt(self):
+        encrypt(message)
+        first_key = get_password('ScoreChecker Crypto', 'scc_key')
+        first_nonce = get_password('ScoreChecker Crypto', 'scc_nonce')
+        first_tag = get_password('ScoreChecker Crypto', 'scc_tag')
+        decrypted = decrypt()
+        self.assertEqual(decrypted, message)
+        second_key = get_password('ScoreChecker Crypto', 'scc_key')
+        second_nonce = get_password('ScoreChecker Crypto', 'scc_nonce')
+        second_tag = get_password('ScoreChecker Crypto', 'scc_tag')
+        self.assertNotEqual(first_key, second_key)
+        self.assertNotEqual(first_nonce, second_nonce)
+        self.assertNotEqual(first_tag, second_tag)
+
+    def test_reset(self):
+        reset()
+        self.assertEqual(get_password('ScoreChecker Crypto', 'scc_key'), '')
+        self.assertEqual(get_password('ScoreChecker Crypto', 'scc_nonce'), '')
+        self.assertEqual(get_password('ScoreChecker Crypto', 'scc_tag'), '')
