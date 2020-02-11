@@ -8,15 +8,13 @@ The saved configurations are stored on disk and encrypted with AES.
 
 import os
 import json
-import keyring
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
 from loader import load_captcha_model, load_query_model
 from base import BaseApp
-from Crypto.Cipher import AES
 from Crypto.Hash import MD5
-from Crypto.Random import get_random_bytes
+from util import cryptography
 
 
 class ConfigApp(BaseApp):
@@ -34,19 +32,21 @@ class ConfigApp(BaseApp):
         If saved configurations are loaded successfully,
         no window will be shown later.
         """
-        self.__status = False
-        self.__ID = ''
-        self.__password = ''
-        self.__captcha_model = None
-        self.__query_model = None
-        self.__config_filename = 'checker.cfg'
-
-        if os.path.exists(self.__config_filename):
-            print('Trying to load configurations from disk ...')
-            self.__load_config()
-
-        if not self.get_status():
+        self.__fail_hint = ''
+        self.__default_config()
+        print('Trying to load configurations ...')
+        if not (self.__load_config() and self.get_status()):
+            print('Failed to load configurations.')
+            cryptography.reset()
             self.__set_layout()
+
+    def __default_config(self):
+        self.__config = {
+            'ID': '',
+            'password': 'd41d8cd98f00b204e9800998ecf8427e',
+            'captcha_model': None,
+            'query_model': None
+        }
 
     def __set_layout(self):
         # set layouts
@@ -68,19 +68,14 @@ class ConfigApp(BaseApp):
         self.__password_entry.grid(row=1, column=1, padx=20, pady=10)
 
         self.__button_frame = tkinter.Frame(self.__main_frame)
-        self.__button_frame.grid(row=2,
-                                 column=0,
-                                 columnspan=2,
-                                 padx=20,
-                                 pady=10)
+        self.__button_frame.grid(row=2, column=0, columnspan=2,
+                                 padx=20, pady=10)
         self.__captcha_model_button = tkinter.Button(
-            self.__button_frame,
-            text='Load Captcha Model',
+            self.__button_frame, text='Load Captcha Model',
             command=self.__load_captcha_model)
         self.__captcha_model_button.pack(side='left', padx=10)
         self.__query_model_button = tkinter.Button(
-            self.__button_frame,
-            text='Load Query Model',
+            self.__button_frame, text='Load Query Model',
             command=self.__load_query_model)
         self.__query_model_button.pack(side='left', padx=10)
         self.__proceed_button = tkinter.Button(self.__button_frame,
@@ -90,209 +85,117 @@ class ConfigApp(BaseApp):
 
         self.__config_save_enable = tkinter.BooleanVar()
         self.__config_box = tkinter.Checkbutton(
-            self.__main_frame,
-            text='Save configurations',
+            self.__main_frame, text='Save configurations',
             variable=self.__config_save_enable,
             command=self.__enable_save_warning)
         self.__config_box['selectcolor'] = self.__config_box['bg']
         self.__config_box.grid(row=3, column=0, columnspan=2, padx=20, pady=10)
         self.mainloop()
 
-    def __load_model(self, model_category, filetypes, loader):
-        # Generic model loader.
-        # 'filetypes' work as a filter,
-        # 'loader' is a function to load a model.
-        model_category = model_category.lower()
-        capitalized_model_category = model_category.capitalize()
-        model_filename = tkinter.filedialog.askopenfilename(
-            filetypes=filetypes,
-            title='Load %s Model' % capitalized_model_category)
-        model = loader(model_filename)
-        if model is None:
-            tkinter.messagebox.showerror(
-                'Load %s Model' % capitalized_model_category,
-                'Failed to load the %s model, please retry.' % model_category)
-        else:
-            tkinter.messagebox.showinfo(
-                'Load %s Model' % capitalized_model_category,
-                'The %s model is loaded successfully.' % model_category)
-        return model_filename, model
-
     def __load_captcha_model(self):
         # Load a captcha model, should be HDF5 format.
-        # The model is a (filename, Object) tuple
-        self.__captcha_model = self.__load_model(
-            model_category='captcha',
-            filetypes=[('HDF5 format', '.hdf5')],
-            loader=load_captcha_model
-        )
+        # This function only returns a filepath and will not do loading jobs.
+        self.__config['captcha_model'] = tkinter.filedialog.askopenfilename(
+            filetypes=[('HDF5 format', '.hdf5')], title='Load Captcha Model')
 
     def __load_query_model(self):
         # Load a query model, should be JSON format.
-        # The model is a (filename, Object) tuple
-        self.__query_model = self.__load_model(
-            model_category='query',
-            filetypes=[('JSON format', '.json')],
-            loader=load_query_model
-        )
+        # This function only returns a filepath and will not do loading jobs.
+        self.__config['query_model'] = tkinter.filedialog.askopenfilename(
+            filetypes=[('JSON format', '.json')], title='Load Query Model')
 
     def __proceed(self):
-        # Process the variables passed in.
-        status = True
-        fail_hint = 'Failed to proceed:' + os.linesep
-        self.__ID = self.__ID_entry.get()
-        if len(self.__ID) == 0:
-            status = False
-            fail_hint += 'Your ID should not be empty.' + os.linesep
-
-        self.__password = MD5.new(
+        self.__config['ID'] = self.__ID_entry.get()
+        self.__config['password'] = MD5.new(
             self.__password_entry.get().encode()).hexdigest()
-        # empty string hash
-        if self.__password == 'd41d8cd98f00b204e9800998ecf8427e':
-            status = False
-            fail_hint += 'Your password should not be empty.' + os.linesep
-
-        if self.__captcha_model[1] is None:
-            status = False
-            fail_hint += 'You should load a captcha model.' + os.linesep
-
-        if self.__query_model[1] is None:
-            status = False
-            fail_hint += 'You should load a query model.' + os.linesep
-
-        if status:
-            print('Status checkes have been passed ...')
-            self.__main_window.destroy()
+        if self.get_status():
+            self.destroy()
+            self.__save_config()
         else:
-            print('Some checkes have been failed ...')
-            tkinter.messagebox.showerror("Proceed", fail_hint)
-
-        self.__status = status
-        self.__save_config()
+            tkinter.messagebox.showerror("Status Check", self.__fail_hint)
 
     def __enable_save_warning(self):
         # A saving configuration feature warning window.
         if self.__config_save_enable.get():
             ignore_warning = tkinter.messagebox.askyesno(
                 "Enable Saving Config Mode",
-                "Saving your configurations will help with your ID, password \
+                "Saving your configurations will load your ID, password \
 and models automatically without opening a window every time you use. \
 Although we make efforts to encrypt your credentials in AES and save a \
 random password in the keyring, we can't guarantee your infomation stored \
-securely. You can disable this mode by deleting the '%s' file on your disk. \
-Will you still enable this mode?"
-                % self.__config_filename)
+securely. Will you still enable this mode? The saved data can be removed.")
             if not ignore_warning:
-                print('Saving config mode enabled by user ...')
                 self.__config_save_enable.set(False)
 
     def __load_config(self):
         # Load configurations from disk.
-        json_config = self.__decrypt()
-        if json_config:
-            print('Extracting configurations from file ...')
-            config = json.loads(json_config)
-            self.__ID = config['ID']
-            self.__password = config['password']
-            self.__captcha_model = config[
-                'captcha_model_path'], load_captcha_model(
-                    config['captcha_model_path'])
-            self.__query_model = config[
-                'query_model_path'], load_query_model(
-                    config['query_model_path'])
-        else:
-            print('Failed to load configurations from file, removing it ...')
-            os.remove(self.__config_filename)
-            return
-
-        if self.__ID is None or self.__password is None or \
-           self.__captcha_model[1] is None or self.__query_model[1] is None:
-            print('Invalid configuration file, removing it ...')
-            os.remove(self.__config_filename)
-
-        self.__status = True
+        try:
+            plaintext = cryptography.decrypt().decode()
+            json_config = json.loads(plaintext)
+            self.__config['ID'] = json_config['ID']
+            self.__config['password'] = json_config['password']
+            self.__config['captcha_model'] = json_config['captcha_model']
+            self.__config['query_model'] = json_config['query_model']
+            return True
+        except:
+            return False
 
     def __save_config(self):
         # Save configurations to disk.
         if self.__config_save_enable.get():
-            config = {
-                'ID': self.__ID,
-                'password': self.__password,
-                'captcha_model_path': self.__captcha_model[0],
-                'query_model_path': self.__query_model[0],
-            }
-            json_config = json.dumps(config).encode()
-            if self.__encrypt(json_config):
-                print('Configurations have been saved to disk successfully.')
-
-    def __encrypt(self, data):
-        # Encrypt the configuration file with a random key.
-        try:
-            key = get_random_bytes(32)
-            cipher = AES.new(key, AES.MODE_EAX)
-            nonce = cipher.nonce
-            ciphertext, tag = cipher.encrypt_and_digest(data)
-            keyring.set_password("ScoreChecker Crypto Module", "sccm_key",
-                                 key.hex())
-            keyring.set_password("ScoreChecker Crypto Module", "sccm_nonce",
-                                 nonce.hex())
-            keyring.set_password("ScoreChecker Crypto Module", "sccm_tag",
-                                 tag.hex())
-            with open(self.__config_filename, 'wb') as f:
-                f.write(ciphertext)
-            return True
-        except Exception as e:
-            print('Failed to encrypt the data:', e)
-            raise e
-            return False
-
-    def __decrypt(self):
-        # decrypt and verify the data with the key stored in keyring.
-        # The configuration file will be encrypted with a different key after
-        # decryption.
-        try:
-            with open(self.__config_filename, 'rb') as f:
-                ciphertext = f.read()
-            key = bytes.fromhex(
-                keyring.get_password("ScoreChecker Crypto Module", "sccm_key"))
-            nonce = bytes.fromhex(
-                keyring.get_password("ScoreChecker Crypto Module",
-                                     "sccm_nonce"))
-            tag = bytes.fromhex(
-                keyring.get_password("ScoreChecker Crypto Module", "sccm_tag"))
-            cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
-            plaintext = cipher.decrypt(ciphertext)
-            cipher.verify(tag)
-            if not self.__encrypt(plaintext):
-                raise PermissionError(
-                    "Failed to reset the key after decryption.")
-            return plaintext
-        except Exception as e:
-            print('Failed to decrypt the data:', e)
-            return None
+            json_config = json.dumps(self.__config).encode()
+            try:
+                cryptography.encrypt(json_config)
+                print('Configurations have been saved successfully.')
+            except Exception as e:
+                print('Failed to encrypt the configurations:', e)
 
     def get_status(self):
         """
         Get data status.
 
-        Call this function before you call get_credentials.
-        A PermissionError will be thrown probably if you don't do the check.
+        This function will be called before you call get_credentials.
         """
-        return self.__status
+        fail = False
+        fail_hint = 'You failed the status check:' + os.linesep
+        if len(self.__config['ID']) == 0:
+            fail = True
+            fail_hint += 'Your ID should not be empty.' + os.linesep
+
+        if self.__config['password'] == 'd41d8cd98f00b204e9800998ecf8427e':
+            fail = True
+            fail_hint += 'Your password should not be empty.' + os.linesep
+
+        if load_captcha_model(self.__config['captcha_model']) is None:
+            fail = True
+            fail_hint += 'You should load a valid captcha model.' + os.linesep
+
+        if load_query_model(self.__config['query_model']) is None:
+            fail = True
+            fail_hint += 'You should load a query model.' + os.linesep
+
+        if fail:
+            self.__fail_hint = fail_hint
+            print('Some checkes have been failed ...')
+            print(fail_hint.replace(os.linesep, '\n'))
+            return False
+
+        return True
 
     def get_credentials(self):
         """
         Get data/credentials from the app once.
 
         This should be the only data connection between this app
-        and the caller. For security, this function should be called after
-        status flag have been set to True. Once called, the status flag is
-        set to False. Please handle it with care.
+        and the caller.
         """
         if self.get_status():
-            self.__status = False  # reset status flag
-            return self.__ID, self.__password, self.__captcha_model[
-                1], self.__query_model[1]
+            _id = self.__config['ID']
+            password = self.__config['password']
+            captcha_model = load_captcha_model(self.__config['captcha_model'])
+            query_model = load_query_model(self.__config['query_model'])
+            self.__default_config()
+            return (_id, password, captcha_model, query_model)
         else:
             raise PermissionError(
                 'Your access to this function violates the security policy.'
