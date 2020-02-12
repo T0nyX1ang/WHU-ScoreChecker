@@ -1,5 +1,15 @@
 ## Changelogs:
 
+### Version 1.0.2
+
+* Add tests and coverage tests for this project.
+* Make the project into a package for further convenience.
+* Add support for continous-deployment on Github.
+* Fix several bugs.
+* Split decryption, encryption, type checks and range checks into util package.
+* Move the loader to an upper layer.
+* ConfigApp and ResultApp inherit the BaseApp now.
+
 ### Version 1.0.1
 
 * Add documents and fix lint issues.
