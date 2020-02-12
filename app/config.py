@@ -157,27 +157,26 @@ securely. Will you still enable this mode? The saved data can be removed.")
         This function will be called before you call get_credentials.
         """
         fail = False
-        fail_hint = 'You failed the status check:' + os.linesep
+        fail_hint = 'Status check have been failed:\n'
         if len(self.__config['ID']) == 0:
             fail = True
-            fail_hint += 'Your ID should not be empty.' + os.linesep
+            fail_hint += 'The ID should not be empty.\n'
 
         if self.__config['password'] == 'd41d8cd98f00b204e9800998ecf8427e':
             fail = True
-            fail_hint += 'Your password should not be empty.' + os.linesep
+            fail_hint += 'The password should not be empty.\n'
 
         if not load_captcha_model(self.__config['captcha_model']):
             fail = True
-            fail_hint += 'You should load a valid captcha model.' + os.linesep
+            fail_hint += 'An invalid captcha model is loaded.\n'
 
         if not load_query_model(self.__config['query_model']):
             fail = True
-            fail_hint += 'You should load a query model.' + os.linesep
+            fail_hint += 'An invalid query model is loaded.\n'
 
         if fail:
-            self.__fail_hint = fail_hint
-            print('Some checkes have been failed ...')
-            print(fail_hint.replace(os.linesep, '\n'))
+            self.__fail_hint = fail_hint.replace('\n', os.linesep)
+            print(fail_hint)
             return False
 
         return True
@@ -198,5 +197,5 @@ securely. Will you still enable this mode? The saved data can be removed.")
             return (_id, password, captcha_model, query_model)
         else:
             raise PermissionError(
-                'Your access to this function violates the security policy.'
+                'An access to this function violates the security policy.'
             )
