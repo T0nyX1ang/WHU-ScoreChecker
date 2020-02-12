@@ -12,7 +12,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='WHU-ScoreChecker',
-    version='1.0.1',
+    version='1.0.2',
     author='Tony Xiang',
     author_email='tonyxfy@qq.com',
     description='A simple, open-source and model-driven score checker for \
