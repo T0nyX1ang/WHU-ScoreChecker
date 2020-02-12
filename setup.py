@@ -36,5 +36,16 @@ WHU.',
         'console_scripts': [
             'scorechecker=scorechecker.main:run',
         ],
-    }
+    },
+    install_requires=[
+        'Keras>=2.3.1',
+        'lxml>=4.3.2',
+        'opencv_python>=4.1.0.25',
+        'keyring>=20.0.1',
+        'requests>=2.21.0',
+        'numpy>=1.16.2',
+        'pycryptodome>=3.9.6',
+        'beautifulsoup4>=4.7.1',
+        'tensorflow==2.0.1'
+    ]
 )
