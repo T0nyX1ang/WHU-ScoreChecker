@@ -6,8 +6,8 @@ This app displays query results based on the (result) score table.
 
 import tkinter
 import tkinter.ttk
-from base import BaseApp
-from course import score
+from .base import BaseApp
+from .course import score
 
 
 class ResultApp(BaseApp):

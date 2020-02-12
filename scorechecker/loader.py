@@ -6,7 +6,7 @@ Available functions are load_captcha_model and load_query_model.
 Models are loaded based on their filenames.
 """
 
-from util.check import type_check, range_check
+from .util.check import type_check, range_check
 
 
 def load_captcha_model(filename):

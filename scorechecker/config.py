@@ -11,10 +11,10 @@ import json
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
-from loader import load_captcha_model, load_query_model
-from base import BaseApp
 from Crypto.Hash import MD5
-from util import cryptography
+from .loader import load_captcha_model, load_query_model
+from .base import BaseApp
+from .util import cryptography
 
 
 class ConfigApp(BaseApp):

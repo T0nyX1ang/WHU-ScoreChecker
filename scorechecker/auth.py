@@ -5,8 +5,8 @@ Deal with user's login and logout actions.
 """
 
 import time
-from image import predict
-from net import message, analyze
+from .image import predict
+from .net import message, analyze
 
 
 def auth_procedure(_id, password, captcha_model, retries=3):
