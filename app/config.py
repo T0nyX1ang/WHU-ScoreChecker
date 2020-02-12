@@ -166,11 +166,11 @@ securely. Will you still enable this mode? The saved data can be removed.")
             fail = True
             fail_hint += 'Your password should not be empty.' + os.linesep
 
-        if load_captcha_model(self.__config['captcha_model']) is None:
+        if not load_captcha_model(self.__config['captcha_model']):
             fail = True
             fail_hint += 'You should load a valid captcha model.' + os.linesep
 
-        if load_query_model(self.__config['query_model']) is None:
+        if not load_query_model(self.__config['query_model']):
             fail = True
             fail_hint += 'You should load a query model.' + os.linesep
 
