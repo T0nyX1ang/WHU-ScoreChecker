@@ -23,9 +23,6 @@ WHU.',
     url='https://github.com/T0nyX1ang/WHU-ScoreChecker',
     packages=setuptools.find_packages(include=['scorechecker',
                                                'scorechecker.*']),
-    package_data={
-        'static': ['*.json']
-    },
     classifiers=[
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
