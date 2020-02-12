@@ -1,11 +1,9 @@
 import os
 import sys
-sys.path.append(os.path.join(os.getcwd(), 'app'))
-
 import pytest
 import requests
-from app.auth import auth_procedure
-from app.net.message import Message
+from scorechecker.auth import auth_procedure
+from scorechecker.net.message import Message
 from keras.models import load_model
 
 model = load_model('captcha_model.hdf5')

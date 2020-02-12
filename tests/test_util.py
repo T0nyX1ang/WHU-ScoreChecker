@@ -1,6 +1,6 @@
 import unittest
-from app.util.check import *
-from app.util.cryptography import *
+from scorechecker.util.check import *
+from scorechecker.util.cryptography import *
 from keyring import get_password
 
 message = b'hello world'

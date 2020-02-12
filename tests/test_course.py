@@ -1,9 +1,9 @@
 import unittest
 
-from app.course.extract import *
-from app.course.query import *
-from app.course.score import *
-from app.course.optimize import *
+from scorechecker.course.extract import *
+from scorechecker.course.query import *
+from scorechecker.course.score import *
+from scorechecker.course.optimize import *
 
 test_score_table = {
     ('课程01', '公共必修', 0.5, '学院01', '普通', 2016, 1, 89.0),

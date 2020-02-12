@@ -1,7 +1,7 @@
 import os
 import unittest
 from keras.models import load_model
-from app.image.predict import predict_captcha
+from scorechecker.image.predict import predict_captcha
 
 model = load_model('captcha_model.hdf5')
 test_image_dir = os.path.join(os.getcwd(), os.path.join('tests', 'test_captcha'))

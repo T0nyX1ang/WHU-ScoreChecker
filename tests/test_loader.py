@@ -1,8 +1,7 @@
 import os
 import sys
-sys.path.append(os.path.join(os.getcwd(), 'app'))
 import unittest
-from app.loader import *
+from scorechecker.loader import *
 from keras.engine.sequential import Sequential
 
 test_query_model_dir = os.path.join(os.getcwd(), os.path.join('tests', 'test_query'))

@@ -1,8 +1,8 @@
 import os
 import unittest
-from app.net.analyze import *
-from app.net.headers import Headers
-from app.net.message import Message
+from scorechecker.net.analyze import *
+from scorechecker.net.headers import Headers
+from scorechecker.net.message import Message
 
 test_html_dir = os.path.join(os.getcwd(), os.path.join('tests', 'test_html'))
 with open(os.path.join(test_html_dir, 'test_a.html'), 'r', encoding='utf-8') as f:

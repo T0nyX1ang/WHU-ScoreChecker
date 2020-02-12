@@ -1,11 +1,10 @@
 import os
 import sys
-sys.path.append(os.path.join(os.getcwd(), 'app'))
-from app.base import BaseApp
-from app.config import ConfigApp
-from app.result import ResultApp
-from app.main import ScoreCheckerApp
-from app.util.cryptography import *
+from scorechecker.base import BaseApp
+from scorechecker.config import ConfigApp
+from scorechecker.result import ResultApp
+from scorechecker.main import run
+from scorechecker.util.cryptography import *
 from keras.engine.sequential import Sequential
 import requests
 import tkinter
@@ -97,9 +96,9 @@ def test_main_app(monkeypatch):
     monkeypatch.setattr(requests, "post", mock_post)
     monkeypatch.setattr(tkinter.Tk, 'mainloop', lambda x:0)
     encrypt(json.dumps(config_message).encode())
-    main_app = ScoreCheckerApp()
+    run()
     reset()
-    main_app = ScoreCheckerApp()
+    run()
 
 
 class TestAppWithoutWindow(unittest.TestCase):
