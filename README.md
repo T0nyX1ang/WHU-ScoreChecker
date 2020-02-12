@@ -23,14 +23,20 @@ A simple, open-source and model-driven score checker for WHU.
 
 ### Query model
 
-* Some query models is included this project. They are inside the `./static` directory.
+* Some query models is included this project on Github. They are inside the `./static` directory.
 * If you just want to check all of your scores, load the `./static/default.json` model.
 * If you want to do different jobs, take a look at the `./static/example.json` model, it includes all you need.
 * The query model parser is under construction and can't deal with very difficult jobs at this time.
 
-### App side (For users)
+### Installation
 
-* Do the following things:
+* If you want to use pip:
+```bash
+	# Note that query model examples are not included when using pip
+	pip install WHU-ScoreChecker
+```
+
+* If you want to build from codes:
 ```bash
 	# clone this repository, or download it from the release page
 	git clone https://github.com/T0nyX1ang/WHU-ScoreChecker.git
@@ -39,17 +45,33 @@ A simple, open-source and model-driven score checker for WHU.
 	# install dependencies (pip on Windows, pip3 on Linux)
 	pip3/pip install -r requirements.txt
 	# run the app
-	python3/py -3 main.py
+	python3/py -3 setup.py install
 	# enter your credentials and load models needed to continue ...
 ```
 
-### Dev side (For developers)
+### Run the app
 
-* Some of the codes here can be utilized and applied in your own project, we recommend these:
-	1. `./app/image` and `./app/model` tools with captcha model could be implemented in captcha recognition.
-	2. `./app/net` tools works like a session, and could be implemented in similar condition.
-	3. `./app/course` tools could be implemented in course querying situation.
-* Functions initialized with `__` are private, and can't be used publicly.
+* The app should be in your `$PATH$` first. If it does, just type the following line in your shell:
+```bash
+	scorechecker
+```
+
+### Integration and contribution
+
+* Integration and contribution are warmly welcomed.
+* If you want to integrate our codes in your project, just import some of the following to continue:
+```python
+	import scorechecker
+	import scorechecker.course
+	import scorechecker.image
+	import scorechecker.net
+	import scorechecker.util
+```
+* If you want to validate your query model without invoking the graphical interface:
+```python
+	from scorechecker.loader import load_query_model
+	load_query_model('your-model-name.json')
+```
 
 ## License
 
