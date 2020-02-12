@@ -42,6 +42,8 @@ A simple, open-source and model-driven score checker for WHU.
 	git clone https://github.com/T0nyX1ang/WHU-ScoreChecker.git
 	# change your directory
 	cd WHU-ScoreChecker
+	# install dependencies (pip on Windows, pip3 on Linux)
+	pip3/pip install -r requirements.txt
 	# install the app
 	python3/py -3 setup.py install
 ```
