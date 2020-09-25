@@ -46,6 +46,6 @@ WHU.',
         'numpy>=1.16.2',
         'pycryptodome>=3.9.6',
         'beautifulsoup4>=4.7.1',
-        'tensorflow==2.0.1'
+        'tensorflow==2.0.3'
     ]
 )
